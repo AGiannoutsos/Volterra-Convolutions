@@ -1,3 +1,4 @@
+import os
 import torch
 import pytorch_lightning as pl
 from pytorch_lightning.loggers import WandbLogger
@@ -7,6 +8,8 @@ from util import artifact_cleaner, ArtifactCleaner, get_model_from_logger
 from VolterraConvolutions.data_module import CIFARDataModule
 from VolterraConvolutions.model_module import ModelModule
 
+
+os.environ["WANDB_RESUME"]  = "allow"
 
 def trainer(LOGGER_CONFIG, TRAINING_CONFIG, DATA_CONFIG, MODEL_CONFIG):
 
@@ -26,7 +29,7 @@ def trainer(LOGGER_CONFIG, TRAINING_CONFIG, DATA_CONFIG, MODEL_CONFIG):
 
     if training and LOGGER_CONFIG.logger is not None and debug is False:
         print(f"INITIALIZING LOGGER WITH NAME {LOGGER_CONFIG.experiment_name} IN PROJECT {LOGGER_CONFIG.project_name}")
-        logger = WandbLogger(log_model='all', resume="allow", project=LOGGER_CONFIG.project_name, resume=LOGGER_CONFIG.experiment_name, name=LOGGER_CONFIG.experiment_name)
+        logger = WandbLogger(log_model='all', project=LOGGER_CONFIG.project_name, resume=LOGGER_CONFIG.experiment_name, name=LOGGER_CONFIG.experiment_name)
         TRAINING_CONFIG["logger"] = logger
         # run = LOGGER_CONFIG.logger.init(project=LOGGER_CONFIG.project_name, resume=LOGGER_CONFIG.experiment_name) 
         # run.name = LOGGER_CONFIG.experiment_name

@@ -3,6 +3,8 @@ import wandb
 import torch
 import pytorch_lightning as pl
 
+os.environ["WANDB_RESUME"]  = "allow"
+
 
 class AttrDict(dict):
     def __init__(self, *args, **kwargs):
