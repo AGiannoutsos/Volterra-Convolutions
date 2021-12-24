@@ -4,8 +4,9 @@ from pytorch_lightning.loggers import WandbLogger
 from pytorch_lightning.callbacks import ModelCheckpoint
 
 from util import artifact_cleaner, ArtifactCleaner, get_model_from_logger
-from data_module import CIFARDataModule
-from model_module import ModelModule
+from VolterraConvolutions.data_module import CIFARDataModule
+from VolterraConvolutions.model_module import ModelModule
+
 
 def trainer(LOGGER_CONFIG, TRAINING_CONFIG, DATA_CONFIG, MODEL_CONFIG):
 

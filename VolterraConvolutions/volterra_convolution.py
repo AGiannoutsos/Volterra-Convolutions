@@ -3,7 +3,6 @@ import numpy as np
 from torch import nn
 
 
-
 class VolterraKernel2d(torch.nn.Module):
     def __init__(self,
             kernel_space_size,

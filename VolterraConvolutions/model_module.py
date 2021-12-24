@@ -7,7 +7,7 @@ import pytorch_lightning as pl
 import matplotlib.pyplot as plt
 from torchvision.utils import make_grid
 
-from wide_resnet import Wide_ResNet
+from VolterraConvolutions.wide_resnet import Wide_ResNet
 
 
 class ModelModule(pl.LightningModule):

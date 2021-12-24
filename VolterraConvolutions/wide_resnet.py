@@ -1,7 +1,8 @@
 from torch import nn
 import torch.nn.functional as F
 
-from volterra_convolution import VolterraConv2d
+from VolterraConvolutions.volterra_convolution import VolterraConv2d
+
 
 def init_conv(in_planes, out_planes, stride=1, padding=1, dilation=1, conv_type="linear_conv", masking=True, scaling=True):
     if conv_type == "linear_conv":
