@@ -4,7 +4,7 @@ import pytorch_lightning as pl
 from pytorch_lightning.loggers import WandbLogger
 from pytorch_lightning.callbacks import ModelCheckpoint
 
-from util import artifact_cleaner, ArtifactCleaner, get_model_from_logger
+from VolterraConvolutions.util import artifact_cleaner, ArtifactCleaner, get_model_from_logger
 from VolterraConvolutions.data_module import CIFARDataModule
 from VolterraConvolutions.model_module import ModelModule
 
