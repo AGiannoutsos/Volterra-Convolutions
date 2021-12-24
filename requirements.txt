@@ -1,0 +1,7 @@
+numpy
+matplotlib
+torch
+torchvision
+wandb
+pytorch-lightning
+torchmetrics
