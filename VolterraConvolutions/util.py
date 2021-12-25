@@ -75,7 +75,8 @@ def get_model_from_logger(run, wandb_entity, project_name, experiment_name, vers
         else:
             model_directory = os.path.join(experiment_name,version+".ckpt")
     except:
-        raise Exception("NO MODEL FOUND")
+        print("NO MODEL FOUND\nINITIALIZING NEW MODEL")
+        return None
     #### FIX EPOCH BUG
     fix_scheduler_last_epoch(model_directory)
     return model_directory
