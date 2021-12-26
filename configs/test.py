@@ -83,5 +83,5 @@ MODEL_CONFIG          = AttrDict({
 #################################################
 
 
-if __name__ == __main__:
+if __name__ == "__main__":
     trainer(LOGGER_CONFIG, TRAINING_CONFIG, DATA_CONFIG, MODEL_CONFIG)
