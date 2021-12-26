@@ -48,11 +48,10 @@ class Wide_ResNet(nn.Module):
         k = config.widen_factor
 
         print('| Wide-Resnet %dx%d' %(config.depth, k))
-        # nStages = [16*k, 16*k, 32*k, 64*k] ##########
-        nStages = [16, 16*k, 32*k, 64*k]
+        nStages = [16*k, 16*k, 32*k, 64*k]
         self.in_planes = nStages[0]
 
-        # self.bn0    = nn.BatchNorm2d(3, momentum=0.9) ########
+        self.bn0    = nn.BatchNorm2d(3, momentum=0.9)
         self.conv1  = init_conv(3, nStages[0], stride=config.stride, padding=config.padding, dilation=config.dilation, conv_type=config.conv_type, masking=config.masking, scaling=config.scaling)
         self.layer1 = self._wide_layer(wide_basic, nStages[1], n, config.dropout_rate, stride=1)
         self.layer2 = self._wide_layer(wide_basic, nStages[2], n, config.dropout_rate, stride=2)
@@ -71,9 +70,8 @@ class Wide_ResNet(nn.Module):
         return nn.Sequential(*layers)
 
     def forward(self, x):
-        # out = self.bn0(x)
-        # out = self.conv1(out)
-        out = self.conv1(x)
+        out = self.bn0(x)
+        out = self.conv1(out)
         out = self.layer1(out)
         out = self.layer2(out)
         out = self.layer3(out)
