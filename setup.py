@@ -1,10 +1,15 @@
 from setuptools import setup
-from pip.req import parse_requirements
 
-install_reqs = parse_requirements("requirements.txt")
 
-# reqs is a list of requirement
-reqs = [str(ir.req) for ir in install_reqs]
+reqs = [
+      "numpy",
+      "matplotlib",
+      "torch",
+      "torchvision",
+      "wandb",
+      "pytorch-lightning",
+      "torchmetrics",
+]
 
 
 setup(name='VolterraConvolutions',
