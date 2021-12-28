@@ -9,6 +9,7 @@ reqs = [
       "wandb",
       "pytorch-lightning",
       "torchmetrics",
+      "python-benedict",
 ]
 
 

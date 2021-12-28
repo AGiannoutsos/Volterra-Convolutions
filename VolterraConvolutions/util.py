@@ -2,14 +2,18 @@ import os
 import wandb
 import torch
 import pytorch_lightning as pl
+from benedict import benedict 
 
 os.environ["WANDB_RESUME"]  = "allow"
 
 
-class AttrDict(dict):
+class AttrDict(benedict):
     def __init__(self, *args, **kwargs):
         super(AttrDict, self).__init__(*args, **kwargs)
-        self.__dict__ = self
+        self.__dict__.update(self)
+    def change_nested_value(self, key, value):
+        keypath = [path for path in self.keypaths() if key in path]
+        self[keypath[0]] = value
 
 class LRChanger(pl.Callback):
     def __init__(self, lr=1e-3, verbose=False):
