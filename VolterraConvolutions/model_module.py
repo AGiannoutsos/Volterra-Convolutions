@@ -21,6 +21,7 @@ class ModelModule(pl.LightningModule):
         self.model.apply(self.init_weights)
 
         self.loss = nn.CrossEntropyLoss() 
+        self.best_val_accuracy = []
 
         # metrics 
         self.Accuracy = torchmetrics.Accuracy(num_classes=self.model_config.num_classes)
@@ -95,6 +96,19 @@ class ModelModule(pl.LightningModule):
 
     def predict_step(self, batch):
         return self(batch).argmax(dim=1)
+
+    def validation_epoch_end(self, outputs):
+        # log best validation accuracy epoch
+        val_accuracy = torch.mean(torch.tensor((outputs)))
+        if self.best_val_accuracy:
+            if self.best_val_accuracy[-1] < val_accuracy:
+                self.best_val_accuracy.append(val_accuracy)
+            else:
+                self.best_val_accuracy.append(self.best_val_accuracy[-1])
+        else:
+            self.best_val_accuracy.append(val_accuracy)
+
+        self.log("best_val_accuracy", self.best_val_accuracy[-1], prog_bar=True, logger=True)
 
 
     @classmethod
