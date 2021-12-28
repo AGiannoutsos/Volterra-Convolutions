@@ -48,10 +48,13 @@ class Wide_ResNet(nn.Module):
         k = config.widen_factor
 
         print('| Wide-Resnet %dx%d' %(config.depth, k))
-        nStages = [16*k, 16*k, 32*k, 64*k]
+        nStages = [config.init_channels, 16*k, 32*k, 64*k]
         self.in_planes = nStages[0]
 
-        self.bn0    = nn.BatchNorm2d(3, momentum=0.9)
+        if config.init_bn:
+            self.bn0 = nn.BatchNorm2d(3, momentum=0.9)
+        else:
+            self.bn0 = nn.Identity()
         self.conv1  = init_conv(3, nStages[0], stride=config.stride, padding=config.padding, dilation=config.dilation, conv_type=config.conv_type, masking=config.masking, scaling=config.scaling)
         self.layer1 = self._wide_layer(wide_basic, nStages[1], n, config.dropout_rate, stride=1)
         self.layer2 = self._wide_layer(wide_basic, nStages[2], n, config.dropout_rate, stride=2)

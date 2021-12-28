@@ -70,8 +70,6 @@ def get_model_from_logger(run, wandb_entity, project_name, experiment_name, vers
             api = wandb.Api()
             artifact = api.artifact(f"{wandb_entity}/{project_name}/model-{experiment_name}:{version}")
             model_directory = os.path.join(artifact.download(),"model.ckpt")
-
-            # artifact = run.use_artifact(("model-%s:%s"%(experiment_name, version)), type=type)
         else:
             model_directory = os.path.join(experiment_name,version+".ckpt")
     except:

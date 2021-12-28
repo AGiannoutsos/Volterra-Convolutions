@@ -60,6 +60,8 @@ MODEL_CONFIG          = AttrDict({
                             "widen_factor":         10,
                             "dropout_rate":         0.3,
                             "num_classes":          10,
+                            "init_bn":              True,
+                            "init_channels":        160,
                             "stride":               1,
                             "padding":              1,
                             "dilation":             1,
