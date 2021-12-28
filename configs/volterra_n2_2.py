@@ -2,10 +2,11 @@ import os
 import wandb
 import torch
 from VolterraConvolutions.trainer_module import trainer
-from VolterraConvolutions.util import AttrDict, WDChanger
+from VolterraConvolutions.util import AttrDict, WDChanger, ConfigArgparse
 from pytorch_lightning.callbacks import LearningRateMonitor
 from torchvision.datasets import CIFAR10, CIFAR100
 from torchvision import transforms as T
+
 
 
 ########### WANDB #############################
@@ -83,7 +84,13 @@ MODEL_CONFIG          = AttrDict({
                             }),
                         })
 #################################################
+CONFIG = AttrDict({"LOGGER_CONFIG": LOGGER_CONFIG,
+                   "TRAINING_CONFIG": TRAINING_CONFIG,
+                   "DATA_CONFIG": DATA_CONFIG,
+                   "MODEL_CONFIG": MODEL_CONFIG})
+#################################################
 
 
 if __name__ == "__main__":
-    trainer(LOGGER_CONFIG, TRAINING_CONFIG, DATA_CONFIG, MODEL_CONFIG)
+    CONFIG = ConfigArgparse().get_config(CONFIG)
+    trainer(**CONFIG)

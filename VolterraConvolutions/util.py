@@ -1,6 +1,7 @@
 import os
 import wandb
 import torch
+import argparse
 import pytorch_lightning as pl
 from benedict import benedict 
 
@@ -14,6 +15,65 @@ class AttrDict(benedict):
     def change_nested_value(self, key, value):
         keypath = [path for path in self.keypaths() if key in path]
         self[keypath[0]] = value
+
+class ConfigArgparse(argparse.ArgumentParser):
+    def __init__(self, *args, **kwargs):
+        super(ConfigArgparse, self).__init__(*args, **kwargs)
+
+        self.add_argument('--init_channels', type=int)    
+        self.add_argument('--kernels',       type=int)    
+        self.add_argument('--dilation',      type=int)    
+        self.add_argument('--stride',        type=int)    
+        self.add_argument('--init_bn',       type=str)
+        self.add_argument('--padding',       type=int)    
+        self.add_argument('--masking',       type=str)  
+        self.add_argument('--scaling',       type=str)  
+        self.add_argument('--conv_type',     type=str)    
+        self.add_argument('--depth',         type=int)    
+        self.add_argument('--widen_factor',  type=int)    
+        self.add_argument('--nesterov',      type=str)
+    
+    def str_to_bool(self, value):
+        if isinstance(value, bool):
+            return value
+        if value.lower() in {'False','false', 'f', '0', 'no', 'n'}:
+            return False
+        elif value.lower() in {'True', 'true', 't', '1', 'yes', 'y'}:
+            return True
+        raise ValueError(f'{value} is not a valid boolean value')
+
+    def get_config(self, config):
+
+        args = self.parse_args()
+        print(args)
+
+        if args.init_channels:
+            config.change_nested_value("init_channels", args.init_channels)
+        if args.kernels:
+            config.change_nested_value("kernels", args.kernels)
+        if args.dilation:
+            config.change_nested_value("dilation", args.dilation)
+        if args.stride:
+            config.change_nested_value("stride", args.stride)
+        if args.init_bn:
+            config.change_nested_value("init_bn", self.str_to_bool(args.init_bn))
+        if args.padding:
+            config.change_nested_value("padding", args.padding)
+        if args.masking:
+            config.change_nested_value("masking", self.str_to_bool(args.masking))
+        if args.scaling:
+            config.change_nested_value("scaling", self.str_to_bool(args.scaling))
+        if args.conv_type:
+            config.change_nested_value("conv_type", args.conv_type)
+        if args.depth:
+            config.change_nested_value("depth", args.depth)
+        if args.widen_factor:
+            config.change_nested_value("widen_factor", args.widen_factor)
+        if args.nesterov:
+            config.change_nested_value("nesterov", self.str_to_bool(args.nesterov))
+
+        return config
+
 
 class LRChanger(pl.Callback):
     def __init__(self, lr=1e-3, verbose=False):
