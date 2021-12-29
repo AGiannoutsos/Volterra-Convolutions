@@ -92,4 +92,4 @@ CONFIG = AttrDict({"LOGGER_CONFIG": LOGGER_CONFIG,
 
 if __name__ == "__main__":
     CONFIG = ConfigArgparse().get_config(CONFIG)
-    trainer(**CONFIG)
+    trainer(CONFIG.LOGGER_CONFIG, CONFIG.TRAINING_CONFIG, CONFIG.DATA_CONFIG, CONFIG.MODEL_CONFIG)

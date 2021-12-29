@@ -137,22 +137,23 @@ CONFIG = AttrDict({"LOGGER_CONFIG": LOGGER_CONFIG,
 
 
 
-def trainer(MODEL_CONFIG):
-    print(MODEL_CONFIG, MODEL_CONFIG["depth"], MODEL_CONFIG.depth)
+def trainer(LOGGER_CONFIG, TRAINING_CONFIG, DATA_CONFIG, MODEL_CONFIG):
+    print(MODEL_CONFIG, MODEL_CONFIG["depth"], MODEL_CONFIG.depth, MODEL_CONFIG.optimizer_params.nesterov)
 
 
 if __name__ == "__main__":
     CONFIG = ConfigArgparse().get_config(CONFIG)
     # print(CONFIG.__dict__)
-    print(CONFIG.MODEL_CONFIG.__dict__)
+    # print(CONFIG.MODEL_CONFIG.__dict__)
 
     
 
-    print(CONFIG.MODEL_CONFIG.depth)
-    print(CONFIG.MODEL_CONFIG.optimizer_params.nesterov)
+    # print(CONFIG.MODEL_CONFIG.depth)
+    # print(CONFIG.MODEL_CONFIG.optimizer_params.nesterov)
 
     # print( AttrDict(CONFIG.MODEL_CONFIG).depth)
     # print( CONFIG.MODEL_CONFIG.optimizer_params.__dict__)
     # print( AttrDict(AttrDict(CONFIG.MODEL_CONFIG).optimizer_params).nesterov)
+    # print(CONFIG.MODEL_CONFIG, CONFIG.MODEL_CONFIG["depth"], CONFIG.MODEL_CONFIG.depth)
 
-    # trainer(CONFIG.MODEL_CONFIG)
+    trainer(CONFIG.LOGGER_CONFIG, CONFIG.TRAINING_CONFIG, CONFIG.DATA_CONFIG, CONFIG.MODEL_CONFIG)
