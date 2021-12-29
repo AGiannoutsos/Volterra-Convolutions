@@ -89,8 +89,8 @@ class VolterraConv2d_(torch.nn.Module):
 
         if type(kernel_size) is not tuple:
             kernel_size = (kernel_size, kernel_size)
-        
-        if type(padding) is not tuple or not str:
+
+        if type(padding) is not tuple and type(padding) is not str:
             padding = (padding, padding)
         
         if type(stride) is not tuple:
