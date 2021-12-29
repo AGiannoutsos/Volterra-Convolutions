@@ -74,25 +74,25 @@ class ConfigArgparse(argparse.ArgumentParser):
         print(args)
 
         if args.from_cloud:
-            config.chage_nested_value("from_cloud", self.str_to_bool(args.from_cloud))
+            config.change_nested_value("from_cloud", self.str_to_bool(args.from_cloud))
         if args.load_saved_model:
-            config.chage_nested_value("load_saved_model", self.str_to_bool(args.load_saved_model))
+            config.change_nested_value("load_saved_model", self.str_to_bool(args.load_saved_model))
         if args.watch_model:
-            config.chage_nested_value("watch_model", self.str_to_bool(args.watch_model))
+            config.change_nested_value("watch_model", self.str_to_bool(args.watch_model))
         if args.artifact_cleaner:
-            config.chage_nested_value("artifact_cleaner", self.str_to_bool(args.artifact_cleaner))
+            config.change_nested_value("artifact_cleaner", self.str_to_bool(args.artifact_cleaner))
         if args.delete_artifacts:
-            config.chage_nested_value("delete_artifacts", self.str_to_bool(args.delete_artifacts))
+            config.change_nested_value("delete_artifacts", self.str_to_bool(args.delete_artifacts))
         if args.benchmark:
-            config.chage_nested_value("benchmark", self.str_to_bool(args.benchmark))
+            config.change_nested_value("benchmark", self.str_to_bool(args.benchmark))
         if args.training:
-            config.chage_nested_value("training", self.str_to_bool(args.training))
+            config.change_nested_value("training", self.str_to_bool(args.training))
         if args.debug:
-            config.chage_nested_value("debug", self.str_to_bool(args.debug))
+            config.change_nested_value("debug", self.str_to_bool(args.debug))
         if args.pin_memory:
-            config.chage_nested_value("pin_memory", self.str_to_bool(args.pin_memory))
+            config.change_nested_value("pin_memory", self.str_to_bool(args.pin_memory))
         if args.verbose:
-            config.chage_nested_value("verbose", self.str_to_bool(args.verbose))
+            config.change_nested_value("verbose", self.str_to_bool(args.verbose))
         if args.log_interval:
             config.change_nested_value("log_interval", args.log_interval)
         if args.min_epochs:
