@@ -1,5 +1,6 @@
 import os
 import wandb
+import torch
 import numpy as np
 import torchmetrics
 from torch import nn
