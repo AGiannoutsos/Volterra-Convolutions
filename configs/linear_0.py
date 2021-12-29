@@ -11,6 +11,7 @@ from torchvision import transforms as T
 ########### WANDB #############################
 LOGGER_CONFIG         = AttrDict({
                             "logger":              wandb,
+                            "sweep":               False,
                             "project_owner":       "andreas_giannoutsos",
                             "project_name":        "Volterra-Convolutions",
                             "experiment_name":     "linear_0",

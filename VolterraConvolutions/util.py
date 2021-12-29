@@ -19,7 +19,8 @@ class AttrDict(benedict):
 class ConfigArgparse(argparse.ArgumentParser):
     def __init__(self, *args, **kwargs):
         super(ConfigArgparse, self).__init__(*args, **kwargs)
-
+    
+        self.add_argument("--sweep",               type=str)
         self.add_argument("--from_cloud",          type=str)
         self.add_argument("--load_saved_model",    type=str)
         self.add_argument("--watch_model",         type=str)
@@ -47,7 +48,7 @@ class ConfigArgparse(argparse.ArgumentParser):
         self.add_argument("--val_batch_size",      type=int)
         self.add_argument("--num_workers",         type=int)
         self.add_argument('--init_channels',       type=int)    
-        self.add_argument('--kernel_size',             type=int)    
+        self.add_argument('--kernel_size',         type=int)    
         self.add_argument('--dilation',            type=int)    
         self.add_argument('--stride',              type=int)    
         self.add_argument('--init_bn',             type=str)
@@ -73,6 +74,8 @@ class ConfigArgparse(argparse.ArgumentParser):
         args = self.parse_args()
         print(args)
 
+        if args.sweep:
+            config.change_nested_value("sweep", self.str_to_bool(args.sweep))
         if args.from_cloud:
             config.change_nested_value("from_cloud", self.str_to_bool(args.from_cloud))
         if args.load_saved_model:

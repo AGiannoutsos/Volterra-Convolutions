@@ -27,7 +27,7 @@ def trainer(LOGGER_CONFIG, TRAINING_CONFIG, DATA_CONFIG, MODEL_CONFIG):
     training = TRAINING_CONFIG.training
     del TRAINING_CONFIG["training"]
 
-    if training and LOGGER_CONFIG.logger is not None and debug is False:
+    if training and LOGGER_CONFIG.logger is not None and LOGGER_CONFIG.sweep is False and debug is False:
         print(f"INITIALIZING LOGGER WITH NAME {LOGGER_CONFIG.experiment_name} IN PROJECT {LOGGER_CONFIG.project_name}")
         logger = WandbLogger(log_model='all', project=LOGGER_CONFIG.project_name, resume=LOGGER_CONFIG.experiment_name, name=LOGGER_CONFIG.experiment_name)
         TRAINING_CONFIG["logger"] = logger
@@ -41,6 +41,12 @@ def trainer(LOGGER_CONFIG, TRAINING_CONFIG, DATA_CONFIG, MODEL_CONFIG):
             TRAINING_CONFIG.callbacks.append(ArtifactCleaner(LOGGER_CONFIG.project_name, LOGGER_CONFIG.experiment_name, verbose=False))
         if LOGGER_CONFIG.watch_model:
             logger.watch(MODEL_MODULE, log="all", log_freq=TRAINING_CONFIG.log_every_n_steps)
+
+    if LOGGER_CONFIG.sweep:
+        logger = WandbLogger(log_model='all')
+        TRAINING_CONFIG["logger"] = logger
+        if LOGGER_CONFIG.artifact_cleaner:
+            TRAINING_CONFIG.callbacks.append(ArtifactCleaner(logger.experiment.project_name, logger.experiment.experiment_name, verbose=False))
 
     # loggers and callbacks
     checkpoint_callback = ModelCheckpoint(dirpath=LOGGER_CONFIG.experiment_name, every_n_epochs=LOGGER_CONFIG.log_interval, monitor="val_accuracy", mode="max", auto_insert_metric_name=True, save_last=True)
