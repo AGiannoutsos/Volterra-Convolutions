@@ -134,8 +134,8 @@ class VolterraConv2d_(torch.nn.Module):
             nn.init.zeros_(self.bias_weights)
         
     def conv_output_shape(self, h_w, kernel_size=3, stride=1, pad=0, dilation=1):
-        h = (h_w[0] + (2 * pad[0]) - (dilation * (kernel_size[0] - 1)) - 1)// stride[0] + 1
-        w = (h_w[1] + (2 * pad[1]) - (dilation * (kernel_size[1] - 1)) - 1)// stride[1] + 1
+        h = (h_w[0] + (2 * pad[0]) - (dilation[0] * (kernel_size[0] - 1)) - 1)// stride[0] + 1
+        w = (h_w[1] + (2 * pad[1]) - (dilation[1] * (kernel_size[1] - 1)) - 1)// stride[1] + 1
         return h, w
     
     def get_pad(self, size, kernel_size=3, stride=1, dilation=1):
