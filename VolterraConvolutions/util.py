@@ -159,7 +159,7 @@ class ConfigArgparse(argparse.ArgumentParser):
         CONFIG.MODEL_CONFIG.optimizer_params = AttrDict(CONFIG.MODEL_CONFIG.optimizer_params)
         CONFIG.MODEL_CONFIG.lr_scheduler_params = AttrDict(CONFIG.MODEL_CONFIG.lr_scheduler_params)
 
-        return config
+        return CONFIG
 
 
 class LRChanger(pl.Callback):
