@@ -68,7 +68,7 @@ class ModelModule(pl.LightningModule):
         self.log("val_loss",     loss,     on_step=True, on_epoch=True, prog_bar=True, logger=True)
         self.log("val_accuracy", accuracy, on_step=True, on_epoch=True, prog_bar=True, logger=True)
         self.log("val_f1",       f1,       on_step=True, on_epoch=True, prog_bar=True, logger=True)
-        return loss
+        return accuracy
 
     def test_step(self, training_batch, training_batch_idx):
         data, labels = training_batch
@@ -78,7 +78,7 @@ class ModelModule(pl.LightningModule):
         self.log("test_loss",     loss,     on_step=True, on_epoch=True, prog_bar=True, logger=True)
         self.log("test_accuracy", accuracy, on_step=True, on_epoch=True, prog_bar=True, logger=True)
         self.log("test_f1",       f1,       on_step=True, on_epoch=True, prog_bar=True, logger=True)
-        return loss
+        return accuracy
 
     def configure_optimizers(self):
         optimizer_params = self.model_config.optimizer_params.copy()
