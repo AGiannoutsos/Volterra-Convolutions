@@ -23,9 +23,9 @@ def trainer(LOGGER_CONFIG, TRAINING_CONFIG, DATA_CONFIG, MODEL_CONFIG):
     logger = None
     ckpt_path = None
     debug = TRAINING_CONFIG.debug
-    del TRAINING_CONFIG.debug
+    del TRAINING_CONFIG["debug"]
     training = TRAINING_CONFIG.training
-    del TRAINING_CONFIG.training
+    del TRAINING_CONFIG["training"]
 
     if training and LOGGER_CONFIG.logger is not None and debug is False:
         print(f"INITIALIZING LOGGER WITH NAME {LOGGER_CONFIG.experiment_name} IN PROJECT {LOGGER_CONFIG.project_name}")
