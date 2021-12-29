@@ -4,13 +4,13 @@ import torch.nn.functional as F
 from VolterraConvolutions.volterra_convolution import VolterraConv2d
 
 
-def init_conv(in_planes, out_planes, stride=1, padding=1, dilation=1, conv_type="linear_conv", masking=True, scaling=True):
+def init_conv(in_planes, out_planes, kernel_size=3, stride=1, padding=1, dilation=1, conv_type="linear_conv", masking=True, scaling=True):
     if conv_type == "linear_conv":
-        return nn.Conv2d(in_planes, out_planes, kernel_size=3, stride=stride, padding=padding, dilation=dilation, bias=True)
+        return nn.Conv2d(in_planes, out_planes, kernel_size=kernel_size, stride=stride, padding=padding, dilation=dilation, bias=True)
     elif conv_type == "volterra_conv_n2":
-        return VolterraConv2d(in_planes, out_planes, kernel_size=3, stride=stride, padding=padding, dilation=dilation, bias=True, orders=[1,2], masking=masking, scaling=scaling)
+        return VolterraConv2d(in_planes, out_planes, kernel_size=kernel_size, stride=stride, padding=padding, dilation=dilation, bias=True, orders=[1,2], masking=masking, scaling=scaling)
     elif conv_type == "volterra_conv_n3":
-        return VolterraConv2d(in_planes, out_planes, kernel_size=3, stride=stride, padding=padding, dilation=dilation, bias=True, orders=[1,2,3], masking=masking, scaling=scaling)
+        return VolterraConv2d(in_planes, out_planes, kernel_size=kernel_size, stride=stride, padding=padding, dilation=dilation, bias=True, orders=[1,2,3], masking=masking, scaling=scaling)
     
 
 # Model from 
@@ -55,7 +55,7 @@ class Wide_ResNet(nn.Module):
             self.bn0 = nn.BatchNorm2d(3, momentum=0.9)
         else:
             self.bn0 = nn.Identity()
-        self.conv1  = init_conv(3, nStages[0], stride=config.stride, padding=config.padding, dilation=config.dilation, conv_type=config.conv_type, masking=config.masking, scaling=config.scaling)
+        self.conv1  = init_conv(3, nStages[0], kernel_size=config.kernel_size, stride=config.stride, padding=config.padding, dilation=config.dilation, conv_type=config.conv_type, masking=config.masking, scaling=config.scaling)
         self.layer1 = self._wide_layer(wide_basic, nStages[1], n, config.dropout_rate, stride=1)
         self.layer2 = self._wide_layer(wide_basic, nStages[2], n, config.dropout_rate, stride=2)
         self.layer3 = self._wide_layer(wide_basic, nStages[3], n, config.dropout_rate, stride=2)

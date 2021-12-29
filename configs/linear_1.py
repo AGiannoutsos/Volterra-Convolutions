@@ -63,6 +63,7 @@ MODEL_CONFIG          = AttrDict({
                             "num_classes":          10,
                             "init_bn":              True,
                             "init_channels":        160,
+                            "kernel_size":          3,
                             "stride":               1,
                             "padding":              1,
                             "dilation":             1,

@@ -47,7 +47,7 @@ class ConfigArgparse(argparse.ArgumentParser):
         self.add_argument("--val_batch_size",      type=int)
         self.add_argument("--num_workers",         type=int)
         self.add_argument('--init_channels',       type=int)    
-        self.add_argument('--kernels',             type=int)    
+        self.add_argument('--kernel_size',             type=int)    
         self.add_argument('--dilation',            type=int)    
         self.add_argument('--stride',              type=int)    
         self.add_argument('--init_bn',             type=str)
@@ -127,8 +127,8 @@ class ConfigArgparse(argparse.ArgumentParser):
             config.change_nested_value("dataset_dir", args.dataset_dir)
         if args.init_channels:
             config.change_nested_value("init_channels", args.init_channels)
-        if args.kernels:
-            config.change_nested_value("kernels", args.kernels)
+        if args.kernel_size:
+            config.change_nested_value("kernel_size", args.kernel_size)
         if args.dilation:
             config.change_nested_value("dilation", args.dilation)
         if args.stride:
