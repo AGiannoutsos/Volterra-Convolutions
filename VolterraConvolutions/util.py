@@ -150,6 +150,15 @@ class ConfigArgparse(argparse.ArgumentParser):
         if args.nesterov:
             config.change_nested_value("nesterov", self.str_to_bool(args.nesterov))
 
+        # next time I hope I fix this...
+        CONFIG                 = AttrDict(config)
+        CONFIG.LOGGER_CONFIG   = AttrDict(CONFIG.LOGGER_CONFIG)
+        CONFIG.TRAINING_CONFIG = AttrDict(CONFIG.TRAINING_CONFIG)
+        CONFIG.DATA_CONFIG     = AttrDict(CONFIG.DATA_CONFIG)
+        CONFIG.MODEL_CONFIG    = AttrDict(CONFIG.MODEL_CONFIG)
+        CONFIG.MODEL_CONFIG.optimizer_params = AttrDict(CONFIG.MODEL_CONFIG.optimizer_params)
+        CONFIG.MODEL_CONFIG.lr_scheduler_params = AttrDict(CONFIG.MODEL_CONFIG.lr_scheduler_params)
+
         return config
 
 
