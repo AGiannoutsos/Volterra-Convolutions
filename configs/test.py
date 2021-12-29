@@ -2,6 +2,7 @@ import os
 
 import argparse
 from benedict import benedict 
+from typing import Union
 
 
 class AttrDict(benedict):
@@ -20,6 +21,8 @@ class ConfigArgparse(argparse.ArgumentParser):
         self.add_argument('--depth',               type=int)    
         self.add_argument('--widen_factor',        type=int)    
         self.add_argument('--nesterov',            type=str)
+        self.add_argument('--padding',             type=str)    
+
     
     def str_to_bool(self, value):
         if isinstance(value, bool):
@@ -42,6 +45,8 @@ class ConfigArgparse(argparse.ArgumentParser):
             config.change_nested_value("widen_factor", args.widen_factor)
         if args.nesterov:
             config.change_nested_value("nesterov", self.str_to_bool(args.nesterov))
+        if args.padding:
+            config.change_nested_value("padding", args.padding)
 
         # next time I hope I fix this...
         CONFIG                 = AttrDict(config)
@@ -154,6 +159,6 @@ if __name__ == "__main__":
     # print( AttrDict(CONFIG.MODEL_CONFIG).depth)
     # print( CONFIG.MODEL_CONFIG.optimizer_params.__dict__)
     # print( AttrDict(AttrDict(CONFIG.MODEL_CONFIG).optimizer_params).nesterov)
-    # print(CONFIG.MODEL_CONFIG, CONFIG.MODEL_CONFIG["depth"], CONFIG.MODEL_CONFIG.depth)
+    print(CONFIG.MODEL_CONFIG, CONFIG.MODEL_CONFIG["depth"], CONFIG.MODEL_CONFIG.padding)
 
-    trainer(CONFIG.LOGGER_CONFIG, CONFIG.TRAINING_CONFIG, CONFIG.DATA_CONFIG, CONFIG.MODEL_CONFIG)
+    # trainer(CONFIG.LOGGER_CONFIG, CONFIG.TRAINING_CONFIG, CONFIG.DATA_CONFIG, CONFIG.MODEL_CONFIG)

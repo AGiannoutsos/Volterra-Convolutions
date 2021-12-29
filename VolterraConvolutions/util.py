@@ -51,7 +51,7 @@ class ConfigArgparse(argparse.ArgumentParser):
         self.add_argument('--dilation',            type=int)    
         self.add_argument('--stride',              type=int)    
         self.add_argument('--init_bn',             type=str)
-        self.add_argument('--padding',             type=int)    
+        self.add_argument('--padding',             type=str)    
         self.add_argument('--masking',             type=str)  
         self.add_argument('--scaling',             type=str)  
         self.add_argument('--conv_type',           type=str)    
@@ -136,7 +136,10 @@ class ConfigArgparse(argparse.ArgumentParser):
         if args.init_bn:
             config.change_nested_value("init_bn", self.str_to_bool(args.init_bn))
         if args.padding:
-            config.change_nested_value("padding", args.padding)
+            if args.padding == "same":
+                config.change_nested_value("padding", args.padding)
+            else:
+                config.change_nested_value("padding", int(args.padding))
         if args.masking:
             config.change_nested_value("masking", self.str_to_bool(args.masking))
         if args.scaling:
