@@ -51,12 +51,12 @@ def trainer(LOGGER_CONFIG, TRAINING_CONFIG, DATA_CONFIG, MODEL_CONFIG):
         print("DEBUGGING")
         TRAINING_CONFIG.val_check_interval = 1
     else:
-        del TRAINING_CONFIG.overfit_batches
+        del TRAINING_CONFIG["overfit_batches"]
 
     # check for gpus
     if not torch.cuda.is_available():
         print("GPU NOT AVAILABLE\nREMOVING GPUS")
-        del TRAINING_CONFIG.gpus
+        del TRAINING_CONFIG["gpus"]
 
     # load model from cloud
     if LOGGER_CONFIG.load_saved_model: 
