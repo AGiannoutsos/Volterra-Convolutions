@@ -46,7 +46,7 @@ def trainer(LOGGER_CONFIG, TRAINING_CONFIG, DATA_CONFIG, MODEL_CONFIG):
         logger = WandbLogger(log_model='all')
         TRAINING_CONFIG["logger"] = logger
         if LOGGER_CONFIG.artifact_cleaner:
-            TRAINING_CONFIG.callbacks.append(ArtifactCleaner(logger.experiment.project_name, logger.experiment.experiment_name, verbose=False))
+            TRAINING_CONFIG.callbacks.append(ArtifactCleaner(logger.experiment.entity, logger.experiment.id, verbose=False))
 
     # loggers and callbacks
     checkpoint_callback = ModelCheckpoint(dirpath=LOGGER_CONFIG.experiment_name, every_n_epochs=LOGGER_CONFIG.log_interval, monitor="val_accuracy", mode="max", auto_insert_metric_name=True, save_last=True)
