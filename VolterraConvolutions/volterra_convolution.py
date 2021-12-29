@@ -47,7 +47,7 @@ class VolterraKernel2d(torch.nn.Module):
         # multiply kernel by its self order times
         for order in range(self.order-1):
             size = x.size()
-            x = x.view(size[0], size[1], size[2], -1)
+            x = x.reshape(size[0], size[1], size[2], -1)
             x = x.unsqueeze(4)
             x = x @ kernel
 
