@@ -1,6 +1,8 @@
 import torch
 import numpy as np
 from torch import nn
+import torch.nn.functional as F
+
 
 
 class VolterraKernel2d(torch.nn.Module):
@@ -88,14 +90,14 @@ class VolterraConv2d_(torch.nn.Module):
         if type(kernel_size) is not tuple:
             kernel_size = (kernel_size, kernel_size)
         
-        if type(padding) is not tuple:
+        if type(padding) is not tuple or not str:
             padding = (padding, padding)
         
         if type(stride) is not tuple:
             stride = (stride, stride)
         
-        if type(padding) is not tuple:
-            padding = (padding, padding)
+        if type(dilation) is not tuple:
+            dilation = (dilation, dilation)
 
         self.verbose      = verbose
         self.in_channels  = in_channels
@@ -112,7 +114,7 @@ class VolterraConv2d_(torch.nn.Module):
 
         # get the space of the kernel unfolded
         self.kernel_space_size = self.kernel_size[0] * self.kernel_size[1] 
-        self.unfold = nn.Unfold(self.kernel_size, self.dilation, self.padding, self.stride)
+        # self.unfold = nn.Unfold(self.kernel_size, self.dilation, self.padding, self.stride)
 
         # set volterra weights
         self.volterra_weights = nn.ParameterList([])
@@ -131,19 +133,27 @@ class VolterraConv2d_(torch.nn.Module):
             self.bias_weights = nn.Parameter(torch.Tensor(self.out_channels, 1, 1))
             nn.init.zeros_(self.bias_weights)
         
-    def conv_output_shape(self, h_w, kernel_size=1, stride=1, pad=0, dilation=1):
+    def conv_output_shape(self, h_w, kernel_size=3, stride=1, pad=0, dilation=1):
         h = (h_w[0] + (2 * pad[0]) - (dilation * (kernel_size[0] - 1)) - 1)// stride[0] + 1
         w = (h_w[1] + (2 * pad[1]) - (dilation * (kernel_size[1] - 1)) - 1)// stride[1] + 1
         return h, w
     
+    def get_pad(self, size, kernel_size=3, stride=1, dilation=1):
+        pad = (((size + stride - 1) // stride - 1) * stride + kernel_size - size) * dilation
+        return pad // 2, pad - pad // 2
 
     def forward(self,x):
 
-        # get images out dimension after convolution
-        self.out_height, self.out_width = self.conv_output_shape((x.size()[-2], x.size()[-1]), self.kernel_size, self.stride, self.padding, self.dilation)
+        # get images out dimension after convolution and padding 
+        if self.padding == "same":
+            self.out_height, self.out_width = x.size()[-2], x.size()[-1]
+            self.padding = self.get_pad(self.out_height, self.kernel_size[0], self.stride[0], self.dilation[0])
+        else:
+            self.out_height, self.out_width = self.conv_output_shape((x.size()[-2], x.size()[-1]), self.kernel_size, self.stride, self.padding, self.dilation)
 
         # unfold image
-        unfolded_input_image = self.unfold(x)
+        # unfolded_input_image = self.unfold(x)
+        unfolded_input_image = F.unfold(x, kernel_size=self.kernel_size, dilation=self.dilation, padding=self.padding, stride=self.stride)
 
         # get every volterra kernel and multiply the parameters
         out_image = 0
