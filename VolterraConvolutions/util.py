@@ -252,8 +252,10 @@ class ActivationLogger(pl.Callback):
             break
         # get model activations
         activations = pl_module.activations(data)
+        loged_images = []
         # Log the images as wandb Image
         for sample in range(self.num_samples):
-            trainer.logger.experiment.log({ "activations": wandb.Image(data[sample], caption=f"label:{labels[sample]}") })
+            loged_images.append(wandb.Image(data[sample], caption=f"label:{labels[sample]}"))
             for channel in range(self.num_channels):
-                trainer.logger.experiment.log({ "activations": [wandb.Image(a[sample][channel], caption=f"layer_size:{a.size()}") for a in activations] })
+                loged_images.extend( [wandb.Image(a[sample][channel], caption=f"layer:{layer}") for layer, a in activations.items()] )
+                trainer.logger.experiment.log({ "activations": loged_images })

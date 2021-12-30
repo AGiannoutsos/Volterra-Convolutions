@@ -229,16 +229,16 @@ class VolterraConv2d(torch.nn.Module):
         return out_image
 
     def activations(self, x):
-        out_activations = []
+        out_activations = {}
         out_image = 0
-        for conv in self.convs:
+        for i, conv in enumerate(self.convs):
             out_image += conv(x)
-            out_activations.append(conv(x))
+            out_activations["voltera:",i+1] = conv(x)
             
-        out_activations.append(out_image)
+        out_activations["voltera:out_image"] = out_image
         if self.bias:
             out_image += self.bias_weights
-        out_activations.append(out_image)
+        out_activations["voltera:bias"] = out_image
         
         return out_activations
 
