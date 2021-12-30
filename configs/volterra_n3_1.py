@@ -25,6 +25,7 @@ LOGGER_CONFIG         = AttrDict({
                             "watch_model":         False,
                             "artifact_cleaner":    True,
                             "log_interval":        1,
+                            "log_activations":     False,
                             "delete_artifacts":    False,
                         })
 
@@ -34,7 +35,7 @@ TRAINING_CONFIG       = AttrDict({
                             "max_epochs":          220,
                             "val_check_interval":  1.0,
                             "log_every_n_steps":   50,
-                            "callbacks":           [LearningRateMonitor("epoch"), WDChanger(wd=0.0, epoch=200)],                            "log_activations":     False,
+                            "callbacks":           [LearningRateMonitor("epoch"), WDChanger(wd=0.0, epoch=200)],                            
                             "gpus":                1,
                             "benchmark":           True,
                             "training":            True,

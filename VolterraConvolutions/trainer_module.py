@@ -39,7 +39,7 @@ def trainer(LOGGER_CONFIG, TRAINING_CONFIG, DATA_CONFIG, MODEL_CONFIG):
             artifact_cleaner(LOGGER_CONFIG.project_name, LOGGER_CONFIG.experiment_name)
         if LOGGER_CONFIG.artifact_cleaner:
             TRAINING_CONFIG.callbacks.append(ArtifactCleaner(LOGGER_CONFIG.project_name, LOGGER_CONFIG.experiment_name, verbose=False))
-        if TRAINING_CONFIG.log_activations:
+        if LOGGER_CONFIG.log_activations:
             TRAINING_CONFIG.callbacks.append(ActivationLogger(num_samples=2, num_channels=1))
         if LOGGER_CONFIG.watch_model:
             logger.watch(MODEL_MODULE, log="all", log_freq=TRAINING_CONFIG.log_every_n_steps)

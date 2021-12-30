@@ -74,6 +74,7 @@ LOGGER_CONFIG         = AttrDict({
                             "watch_model":         False,
                             "artifact_cleaner":    True,
                             "log_interval":        1,
+                            "log_activations":     False,
                             "delete_artifacts":    False,
                         })
 
