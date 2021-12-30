@@ -85,3 +85,29 @@ class Wide_ResNet(nn.Module):
 
         return out
 
+    def activations(self, x):
+        if isinstance(self.conv1, nn.Conv2d):
+            out_activations = [self.conv1(x)]
+        else:
+            out_activations = self.conv1.activations(x)
+
+        out = self.bn0(x)
+        out = self.conv1(out)
+        out = self.layer1(out)
+        out_activations.append(out)
+
+        out = self.layer2(out)
+        out_activations.append(out)
+
+        out = self.layer3(out)
+        out_activations.append(out)
+
+        out = F.relu(self.bn1(out))
+        out = F.avg_pool2d(out, 8)
+        out = out.view(out.size(0), -1)
+        out = self.linear(out)
+
+
+
+        return out_activations
+

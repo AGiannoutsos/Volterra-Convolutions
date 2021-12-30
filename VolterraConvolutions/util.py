@@ -20,6 +20,7 @@ class ConfigArgparse(argparse.ArgumentParser):
     def __init__(self, *args, **kwargs):
         super(ConfigArgparse, self).__init__(*args, **kwargs)
     
+        self.add_argument("--log_activations",     type=str)
         self.add_argument("--sweep",               type=str)
         self.add_argument("--from_cloud",          type=str)
         self.add_argument("--load_saved_model",    type=str)
@@ -73,7 +74,9 @@ class ConfigArgparse(argparse.ArgumentParser):
 
         args = self.parse_args()
         print(args)
-
+        
+        if args.log_activations:
+            config.change_nested_value("log_activations", self.str_to_bool(args.log_activations))
         if args.sweep:
             config.change_nested_value("sweep", self.str_to_bool(args.sweep))
         if args.from_cloud:
@@ -235,3 +238,22 @@ def get_model_from_logger(run, wandb_entity, project_name, experiment_name, vers
     #### FIX EPOCH BUG
     fix_scheduler_last_epoch(model_directory)
     return model_directory
+
+class ActivationLogger(pl.Callback):
+    def __init__(self, num_samples=2, num_channels=1):
+        super().__init__()
+        self.num_samples  = num_samples
+        self.num_channels = num_channels
+    def on_validation_epoch_end(self, trainer, pl_module):
+        # get data
+        data, labels = 0,0
+        for data_, labels_ in trainer.datamodule.val_dataloader():
+            data, labels = data_, labels_
+            break
+        # get model activations
+        activations = pl_module.activations(data)
+        # Log the images as wandb Image
+        for sample in range(self.num_samples):
+            trainer.logger.experiment.log({ "activations": wandb.Image(data[sample], caption=f"label:{labels[sample]}") })
+            for channel in range(self.num_channels):
+                trainer.logger.experiment.log({ "activations": [wandb.Image(a[sample][channel], caption=f"layer_size:{a.size()}") for a in activations] })

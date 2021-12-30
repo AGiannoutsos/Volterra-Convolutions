@@ -223,9 +223,24 @@ class VolterraConv2d(torch.nn.Module):
         for conv in self.convs:
             out_image += conv(x)
 
-
         if self.bias:
             out_image += self.bias_weights
         
         return out_image
+
+    def activations(self, x):
+        out_activations = []
+        out_image = 0
+        for conv in self.convs:
+            out_image += conv(x)
+            out_activations.append(conv(x))
+            
+        out_activations.append(out_image)
+        if self.bias:
+            out_image += self.bias_weights
+        out_activations.append(out_image)
+        
+        return out_activations
+
+
 

@@ -2,7 +2,7 @@ import os
 import wandb
 import torch
 from VolterraConvolutions.trainer_module import trainer
-from VolterraConvolutions.util import AttrDict, WDChanger, ConfigArgparse
+from VolterraConvolutions.util import AttrDict, WDChanger, ConfigArgparse, ActivationLogger
 from pytorch_lightning.callbacks import LearningRateMonitor
 from torchvision.datasets import CIFAR10, CIFAR100
 from torchvision import transforms as T
@@ -34,6 +34,7 @@ TRAINING_CONFIG       = AttrDict({
                             "val_check_interval":  1.0,
                             "log_every_n_steps":   50,
                             "callbacks":           [LearningRateMonitor("epoch"), WDChanger(wd=0.0, epoch=200)],
+                            "log_activations":     False,
                             "gpus":                1,
                             "benchmark":           True,
                             "training":            True,

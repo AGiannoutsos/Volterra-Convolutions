@@ -10,6 +10,7 @@ reqs = [
       "pytorch-lightning",
       "torchmetrics",
       "python-benedict",
+      "tqdm"
 ]
 
 

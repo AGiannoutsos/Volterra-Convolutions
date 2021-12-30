@@ -4,6 +4,7 @@ import torch
 import numpy as np
 import torchmetrics
 from torch import nn
+from tqdm import tqdm
 import pytorch_lightning as pl
 import matplotlib.pyplot as plt
 from torchvision.utils import make_grid
@@ -15,14 +16,13 @@ class ModelModule(pl.LightningModule):
     def __init__(self, model_config):
         super().__init__()
         self.model_config = model_config
-        
+        self.best_val_accuracy = []
         self.save_hyperparameters()
 
         self.model = Wide_ResNet(self.model_config)
         self.model.apply(self.init_weights)
 
         self.loss = nn.CrossEntropyLoss() 
-        self.best_val_accuracy = []
 
         # metrics 
         self.Accuracy = torchmetrics.Accuracy(num_classes=self.model_config.num_classes)
@@ -120,6 +120,22 @@ class ModelModule(pl.LightningModule):
         model_artifact_directory = os.path.join(artifact.download(),"model.ckpt")
         # load model
         return cls.load_from_checkpoint(model_artifact_directory)
+
+    
+    def print_parameter_histograms(self, save_dir, bins=50):
+        for name, parameter in tqdm(self.named_parameters()):
+            data = parameter.float().ravel().detach().cpu().numpy()
+            plt.hist(data, density=True, bins=bins) 
+            plt.ylabel('Probability')
+            plt.xlabel('Data')
+            plt.title(f"{name}")
+            filename_png = f"{save_dir}/{name}.png"
+            filename_svg = f"{save_dir}/{name}.svg"
+            os.makedirs(os.path.dirname(filename_png), exist_ok=True)
+            os.makedirs(os.path.dirname(filename_svg), exist_ok=True)
+            plt.savefig(filename_png)
+            plt.savefig(filename_svg)
+            plt.close()
         
 
     # printing results works only after trainer.fit() for validation data

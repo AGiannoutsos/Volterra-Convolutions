@@ -4,7 +4,7 @@ import pytorch_lightning as pl
 from pytorch_lightning.loggers import WandbLogger
 from pytorch_lightning.callbacks import ModelCheckpoint
 
-from VolterraConvolutions.util import artifact_cleaner, ArtifactCleaner, get_model_from_logger
+from VolterraConvolutions.util import artifact_cleaner, ArtifactCleaner, get_model_from_logger, ActivationLogger
 from VolterraConvolutions.data_module import CIFARDataModule
 from VolterraConvolutions.model_module import ModelModule
 
@@ -39,6 +39,8 @@ def trainer(LOGGER_CONFIG, TRAINING_CONFIG, DATA_CONFIG, MODEL_CONFIG):
             artifact_cleaner(LOGGER_CONFIG.project_name, LOGGER_CONFIG.experiment_name)
         if LOGGER_CONFIG.artifact_cleaner:
             TRAINING_CONFIG.callbacks.append(ArtifactCleaner(LOGGER_CONFIG.project_name, LOGGER_CONFIG.experiment_name, verbose=False))
+        if TRAINING_CONFIG.log_activations:
+            TRAINING_CONFIG.callbacks.append(ActivationLogger(num_samples=2, num_channels=1))
         if LOGGER_CONFIG.watch_model:
             logger.watch(MODEL_MODULE, log="all", log_freq=TRAINING_CONFIG.log_every_n_steps)
 
@@ -46,7 +48,7 @@ def trainer(LOGGER_CONFIG, TRAINING_CONFIG, DATA_CONFIG, MODEL_CONFIG):
         logger = WandbLogger(log_model='all')
         TRAINING_CONFIG["logger"] = logger
         if LOGGER_CONFIG.artifact_cleaner:
-            TRAINING_CONFIG.callbacks.append(ArtifactCleaner(logger.experiment.entity, logger.experiment.id, verbose=False))
+            TRAINING_CONFIG.callbacks.append(ArtifactCleaner(logger.experiment.project, logger.experiment.id, verbose=False))
 
     # loggers and callbacks
     checkpoint_callback = ModelCheckpoint(dirpath=LOGGER_CONFIG.experiment_name, every_n_epochs=LOGGER_CONFIG.log_interval, monitor="val_accuracy", mode="max", auto_insert_metric_name=True, save_last=True)
