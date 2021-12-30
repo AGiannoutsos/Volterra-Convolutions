@@ -258,4 +258,4 @@ class ActivationLogger(pl.Callback):
             loged_images.append(wandb.Image(data[sample], caption=f"label:{labels[sample]}"))
             for channel in range(self.num_channels):
                 loged_images.extend( [wandb.Image(a[sample][channel], caption=f"layer:{layer}") for layer, a in activations.items()] )
-                trainer.logger.experiment.log({ "activations": loged_images })
+        trainer.logger.experiment.log({ "activations": loged_images })
