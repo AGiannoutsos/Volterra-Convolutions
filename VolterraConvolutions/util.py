@@ -248,7 +248,7 @@ class ActivationLogger(pl.Callback):
         # get data
         data, labels = 0,0
         for data_, labels_ in trainer.datamodule.val_dataloader():
-            data, labels = data_, labels_
+            data, labels = data_.to(device=pl_module.device), labels_.to(device=pl_module.device)
             break
         # get model activations
         activations = pl_module.activations(data)
