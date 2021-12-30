@@ -149,3 +149,6 @@ class ModelModule(pl.LightningModule):
             plt.imshow(grid_image_tensor.permute((1,2,0)).cpu().numpy())
             print("Predictions ", self.predict_step(data)[0:images_count])
             break
+
+    def activations(self, x):
+        return self.model.activations(x)
