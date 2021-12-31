@@ -86,13 +86,15 @@ class Wide_ResNet(nn.Module):
         return out
 
     def activations(self, x):
-        if isinstance(self.conv1, nn.Conv2d):
-            out_activations = {"linear_conv:",self.conv1(x)}
-        else:
-            out_activations = self.conv1.activations(x)
-
         out = self.bn0(x)
-        out = self.conv1(out)
+
+        if isinstance(self.conv1, nn.Conv2d):
+            out = self.conv1(out)
+            out_activations = {"linear_conv:":out}
+        else:
+            out_activations = self.conv1.activations(out)
+            out = self.conv1(out)
+
         out = self.layer1(out)
         out_activations["layer1"] = out
 
