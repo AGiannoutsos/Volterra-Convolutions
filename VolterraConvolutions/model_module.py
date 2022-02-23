@@ -127,7 +127,7 @@ class ModelModule(pl.LightningModule):
             data = parameter.float().ravel().detach().cpu().numpy()
             plt.hist(data, density=True, bins=bins) 
             plt.ylabel('Probability Density')
-            plt.xlabel('Data')
+            plt.xlabel('Value of Weights')
             # plt.title(f"{name}")
             filename_png = f"{save_dir}/{name}.png"
             filename_svg = f"{save_dir}/{name}.svg"
