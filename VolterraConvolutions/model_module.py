@@ -126,9 +126,9 @@ class ModelModule(pl.LightningModule):
         for name, parameter in tqdm(self.named_parameters()):
             data = parameter.float().ravel().detach().cpu().numpy()
             plt.hist(data, density=True, bins=bins) 
-            plt.ylabel('Probability')
+            plt.ylabel('Probability Density')
             plt.xlabel('Data')
-            plt.title(f"{name}")
+            # plt.title(f"{name}")
             filename_png = f"{save_dir}/{name}.png"
             filename_svg = f"{save_dir}/{name}.svg"
             os.makedirs(os.path.dirname(filename_png), exist_ok=True)
