@@ -16,18 +16,48 @@ My thesis project on non linear Volterra Convolutions
 
 ### Volterra results
 
-| Model              | CIFAR10 | CIFAR100 | 
-|:------------------:|:-------:|:--------:|
-| Linear 28x10       |   0-0   |   0-0    | 
-| Volterra 2nd 28x10 |   0-0   |   0-0    |
-| Volterra 3rd 28x10 |   0-0   |   0-0    |
+| Model         | CIFAR10 Accuracy          | Mean         | 
+|:-------------:|:-------------------------:|:------------:|
+| Linear        |   95.39, 95.21, 95.20     |   95.26      | 
+| Volterra 2nd  |   95.22, **95.50**, 95.44 |   **95.38**  |
+| Volterra 3rd  |   95.31, 95.20, 95.39     |   95.30      |
+
+| Model         | CIFAR100 Accuracy  | Mean         | 
+|:-------------:|:------------------:|:------------:|
+| Linear        |   **77.91**, 77.74 |   **77.50**  | 
+| Volterra 2nd  |   77.57, 77.19     |   77.38      |
+| Volterra 3rd  |   77.64, 76.93     |   77.28      |
 
 ### Grid Search setup
 
+#### Best Parameters Grid Search
 | Parameter          | Values      |
 |:------------------:|:-----------:|
 | Init channel       |   16, 160   |
-| Kernel size        |   3, 5, 7   |
+| Kernel size        |   3, 5      |
 | Dilation           |   1, 2, 3   |
 
+
+#### Best Scaling Parameters Grid Search
+| Parameter          | Values        |
+|:------------------:|:-------------:|
+| Scaling            |   True, False |
+| Masking            |   True, False |
+
 ### Grid Search results
+
+
+#### Best Parameters Grid Search
+| Best Model         | Init channel | Kernel size | Dilation | CIFAR10 Accuracy |
+|:------------------:|:------------:|:-----------:|:--------:|:----------------:|
+| Volterra 2nd       |   16         | 3           | 2        | **95.53**        |
+
+
+#### Best Scaling Parameters Grid Search
+| Best Model         | Scaling | Masking | CIFAR10 Accuracy |
+|:------------------:|:-------:|:-------:|:----------------:|
+| Volterra 2nd       | True    | False   | **95.60**        |
+
+
+
+
