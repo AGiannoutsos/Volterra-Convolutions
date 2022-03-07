@@ -22,11 +22,11 @@ Finally, we show relationships between the non-linear convolutions and the deepe
 
 In this repository, the implementations of the non-linear convolutions can be found.
 
-The complete experimentaion of the non-linear models together with checkpoints of the best performing models can be found in this [WandB project](https://wandb.ai/andreas_giannoutsos/Volterra-Convolutions).
+The complete experimentation of the non-linear models together with checkpoints of the best performing models can be found in this [WandB project](https://wandb.ai/andreas_giannoutsos/Volterra-Convolutions).
 
 ## How to run an experiment
 
-In order to run an experiment this repository needs to be cloned so that the Volterra convolution package together with the requirments are installed.
+In order to run an experiment this repository needs to be cloned so that the Volterra convolution package together with the requirements are installed.
 
 ```git clone https://github.com/AGiannoutsos/Volterra-Convolutions.git
 cd Volterra-Convolutions 
@@ -34,13 +34,12 @@ pip install -r requirements.txt
 python Volterra-Convolutions/setup.py install
 ```
 
-The experiments are preseted in the ./config directory. It is avised to use and [WanbB](https://wandb.ai/site) account and log in before conducting any experiment. However it is not needed and can be avoided.
+The experiments are pre-seted in the ./config directory. It is avised to use and [WanbB](https://wandb.ai/site) account and log in before conducting any experiment. However it is not needed and can be avoided.
 As for example a running command could be:
 
 ```
 python3 Volterra-Convolutions/configs/cifar100_volterra_n2_1.py
 ```
-
 
 
 
